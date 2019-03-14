@@ -45,12 +45,12 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.0.0'
 
+    // RoomDatabase
+    implementation 'androidx.room:room-runtime:2.0.0'
+    annotationProcessor 'androidx.room:room-compiler:2.0.0'
+
     // Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
-
-    // RoomDatabase
-    implementation 'android.arch.persistence.room:runtime:1.1.1'
-    annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
 
     // Tests
     testImplementation 'junit:junit:4.12'

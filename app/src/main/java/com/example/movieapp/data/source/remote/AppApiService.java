@@ -2,8 +2,11 @@ package com.example.movieapp.data.source.remote;
 
 import com.google.gson.JsonObject;
 
+import org.json.JSONObject;
+
 import io.reactivex.Observable;
 import retrofit2.Response;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -12,6 +15,7 @@ import retrofit2.http.Query;
 public interface AppApiService {
     @POST("/movie/{movie_id}/rating")
     Observable<Response<JsonObject>> rateMovie(@Path("movieId") Long movieId,
+                                               @Body JSONObject jsonObject,
                                                @Query("api_key") String apiKey);
 
     @GET("/movie/{sortBy}")
