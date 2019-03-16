@@ -1,6 +1,8 @@
 package com.example.movieapp.data.source.local;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -12,21 +14,15 @@ import java.util.List;
 @Dao
 public interface MovieDao {
 
-    @Query("SELECT * FROM movies")
-    List<Movie> getAllMoview();
+    @Query("SELECT * FROM favoriteMovies")
+    MutableLiveData<List<Movie>> getAllFavoriteMovies();
 
-    @Query("SELECT * FROM movies WHERE isFavorite = 1")
-    List<Movie> getAllFevoriteMovies();
-
-    @Query("SELECT * FROM movies WHERE id = :movieId")
-    Movie getMovieById(String movieId);
+    @Query("SELECT * FROM favoriteMovies WHERE id = :movieId")
+    Movie getFavoriteMovie(Long movieId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAllMovies(List<Movie> movies);
+    void insertFavoriteMovie(Movie movie);
 
-    @Query("UPDATE movies SET isFavorite = :isFavorite WHERE id = :movieId")
-    void updateFavorite(String movieId, boolean isFavorite);
-
-    @Query("DELETE FROM movies")
-    int deleteAllMoview();
+    @Delete
+    int deleteFavouriteMovie(Movie movie);
 }
