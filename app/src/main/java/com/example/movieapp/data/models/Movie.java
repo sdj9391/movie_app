@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "movies")
+@Entity(tableName = "favoriteMovies")
 public class Movie {
 
     @PrimaryKey
@@ -26,8 +26,6 @@ public class Movie {
     private long voteCount;
     @SerializedName("vote_average")
     private float voteAverage;
-
-    transient private boolean isFavorite = false;
 
     public long getId() {
         return id;
@@ -107,13 +105,5 @@ public class Movie {
 
     public void setVoteAverage(float voteAverage) {
         this.voteAverage = voteAverage;
-    }
-
-    public boolean isFavorite() {
-        return isFavorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        isFavorite = favorite;
     }
 }
