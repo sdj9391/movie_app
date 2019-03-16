@@ -155,7 +155,7 @@ class MoviesRemoteRepository {
                 }));
     }
 
-    void cleareApiTasks() {
+    void clearApiTasks() {
         if (disposable != null) {
             disposable.clear();
             disposable = null;

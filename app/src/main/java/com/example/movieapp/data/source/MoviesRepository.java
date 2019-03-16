@@ -25,7 +25,7 @@ public class MoviesRepository {
     }
 
     public void cleareApiTasks() {
-        moviesRemoteRepository.cleareApiTasks();
+        moviesRemoteRepository.clearApiTasks();
     }
 
     public MutableLiveData<List<Movie>> getMovies(String sortBy, int page) {
