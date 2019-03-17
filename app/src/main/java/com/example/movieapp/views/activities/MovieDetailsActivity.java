@@ -1,5 +1,8 @@
 package com.example.movieapp.views.activities;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.movieapp.R;
@@ -18,6 +22,7 @@ import com.example.movieapp.data.models.Video;
 import com.example.movieapp.utils.AppUtils;
 import com.example.movieapp.utils.Constants;
 import com.example.movieapp.viewmodels.MovieViewModel;
+import com.example.movieapp.views.adapters.VideoListAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
@@ -30,7 +35,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private ImageView imageView, addFavouriteButton;
     private RatingBar ratingBar;
     private TextView ratingTextView, titleTextView, dateTextView, descriptionTextView;
-    private View showReviewButton;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private Movie movie;
@@ -58,7 +62,26 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private View.OnClickListener onReviewClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-
+            Intent intent = new Intent(MovieDetailsActivity.this, MovieReviewActivity.class);
+            intent.putExtra(MovieDetailsActivity.EXTRA_MOVIE, movie);
+            startActivity(intent);
+        }
+    };
+    private View.OnClickListener onVideoClickListener = view -> {
+        Object object = view.getTag();
+        if (object instanceof Video) {
+            Video video = (Video) object;
+            Intent appIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("vnd.youtube:" + video.getKey()));
+            Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("http://www.youtube.com/watch?v=" + video.getKey()));
+            try {
+                startActivity(appIntent);
+            } catch (ActivityNotFoundException ex) {
+                startActivity(webIntent);
+            }
+        } else {
+            Log.e("Error", "Video not found");
         }
     };
 
@@ -73,8 +96,10 @@ public class MovieDetailsActivity extends AppCompatActivity {
         titleTextView = findViewById(R.id.text_view_title);
         dateTextView = findViewById(R.id.text_view_date);
         descriptionTextView = findViewById(R.id.text_view_info);
-        showReviewButton = findViewById(R.id.button_review);
+        View showReviewButton = findViewById(R.id.button_review);
         recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this,
+                LinearLayoutManager.HORIZONTAL, false));
         progressBar = findViewById(R.id.progress_bar);
 
         Bundle data = getIntent().getExtras();
@@ -92,11 +117,20 @@ public class MovieDetailsActivity extends AppCompatActivity {
         }
         viewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         viewModel.getLoading().observe(this, this::showLoading);
+        viewModel.getMoviesVideosError().observe(this, this::hideRecyclerView);
         viewModel.getMoviesVideos(movie.getId()).observe(this, this::showData);
         viewModel.getFavoriteMovie(movie.getId()).observe(this, this::favouriteMovie);
         addFavouriteButton.setOnClickListener(onFavouriteClickListener);
         showReviewButton.setOnClickListener(onReviewClickListener);
         showMovieData();
+    }
+
+    private void hideRecyclerView(Boolean isError) {
+        if (isError) {
+            recyclerView.setVisibility(View.GONE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+        }
     }
 
     private void favouriteMovie(Movie movie) {
@@ -130,7 +164,15 @@ public class MovieDetailsActivity extends AppCompatActivity {
     }
 
     private void showData(List<Video> videos) {
+        if (videos == null || videos.size() == 0) {
+            recyclerView.setVisibility(View.GONE);
+            return;
+        }
 
+        recyclerView.setVisibility(View.VISIBLE);
+        VideoListAdapter videoListAdapter = new VideoListAdapter(videos);
+        videoListAdapter.setOnItemClickListener(onVideoClickListener);
+        recyclerView.setAdapter(videoListAdapter);
     }
 
     private void showLoading(Boolean isLoading) {

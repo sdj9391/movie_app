@@ -79,7 +79,6 @@ public class PopularMoviesFragment extends Fragment {
             } else {
                 Log.e("Error", "Wrong Instance found");
             }
-
         }
     };
 

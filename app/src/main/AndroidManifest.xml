@@ -24,5 +24,6 @@
         <activity
             android:name=".views.activities.MovieDetailsActivity"
             android:configChanges="orientation|screenSize" />
+        <activity android:name=".views.activities.MovieReviewActivity" />
     </application>
 </manifest>
