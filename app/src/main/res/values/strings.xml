@@ -5,6 +5,8 @@
     <string name="label_favourite">Favourite</string>
     <string name="msg_item_loading_error">Items not found!</string>
     <string name="label_reviews">Reviews</string>
+    <string name="text_rating">%.1f / 10</string>
+    <string name="text_date">%1$d / %2$d / %3$d</string>
 
     <string-array name="cases_tabs">
         <item>@string/label_popular</item>

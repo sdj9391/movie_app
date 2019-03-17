@@ -4,7 +4,8 @@ public class Constants {
     public static final String MOVIE_API_KEY = "api_key";
     public static final String IMAGE_BASE_URL = "https://image.tmdb.org/t/p/";
     public static final String BASE_URL = "https://api.themoviedb.org/";
-    public static final String IMAGE_SIZE = "w500";
+    public static final String IMAGE_SIZE_W500 = "w500";
+    public static final String IMAGE_SIZE_w780 = "w780";
     public static final String LANGUAGE = "en-US";
     public static final String DATABASE_NAME = "MovieApp.db";
 

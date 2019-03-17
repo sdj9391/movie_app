@@ -74,7 +74,7 @@ public class PopularMoviesFragment extends Fragment {
             if (object instanceof Movie) {
                 Movie movie = (Movie) object;
                 Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
-                intent.putExtra(MovieDetailsActivity.EXTRA_MOVIE_ID, movie.getId());
+                intent.putExtra(MovieDetailsActivity.EXTRA_MOVIE, movie);
                 startActivity(intent);
             } else {
                 Log.e("Error", "Wrong Instance found");

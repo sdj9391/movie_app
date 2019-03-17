@@ -27,6 +27,7 @@ public class FavouriteMoviesFragment extends PopularMoviesFragment {
             showError(true);
             return;
         }
+        showError(false);
         super.showData(movies);
     }
 }

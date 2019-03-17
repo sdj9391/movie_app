@@ -55,7 +55,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Movie movie = movieList.get(position);
-        String url = Constants.IMAGE_BASE_URL + Constants.IMAGE_SIZE + movie.getPosterPath();
+        String url = Constants.IMAGE_BASE_URL + Constants.IMAGE_SIZE_W500 + movie.getPosterPath();
         Picasso.get()
                 .load(url)
                 .placeholder(R.drawable.ic_image_loading)

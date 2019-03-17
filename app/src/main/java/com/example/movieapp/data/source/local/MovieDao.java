@@ -18,7 +18,7 @@ public interface MovieDao {
     LiveData<List<Movie>> getAllFavoriteMovies();
 
     @Query("SELECT * FROM favoriteMovies WHERE id = :movieId")
-    Movie getFavoriteMovie(Long movieId);
+    LiveData<Movie> getFavoriteMovie(Long movieId);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertFavoriteMovie(Movie movie);

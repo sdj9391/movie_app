@@ -80,7 +80,7 @@ public class MoviesRepository {
         new DeleteMovieTask(movieDao).execute(movie);
     }
 
-    public Movie getMoviefromFavorite(Long movieId) {
+    public LiveData<Movie> getFavoriteMovie(Long movieId) {
         return movieDao.getFavoriteMovie(movieId);
     }
 
