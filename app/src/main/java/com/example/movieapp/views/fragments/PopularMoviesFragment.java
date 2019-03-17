@@ -25,13 +25,11 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.List;
 
 public class PopularMoviesFragment extends Fragment {
-    private static final String TAG = "MovieListFragment";
-
     private ProgressBar progressBar;
-    private RecyclerView recyclerView;
+    RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private TextView emptyTextView;
-    private MovieViewModel viewModel;
+    MovieViewModel viewModel;
     private GridLayoutManager layoutManager;
 
     private MovieListAdapter movieListAdapter;
@@ -40,7 +38,7 @@ public class PopularMoviesFragment extends Fragment {
     private int page = 0;
     private int totalPages = 1;
 
-    private RecyclerView.OnScrollListener recyclerViewOnScrollListener = new RecyclerView.OnScrollListener() {
+    RecyclerView.OnScrollListener recyclerViewOnScrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
@@ -82,9 +80,7 @@ public class PopularMoviesFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_view);
         layoutManager = new GridLayoutManager(getActivity(), 2);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addOnScrollListener(recyclerViewOnScrollListener);
         swipeRefreshLayout = view.findViewById(R.id.layout_swipe_refresh);
-        swipeRefreshLayout.setOnRefreshListener(onSwipeToRefresh);
         emptyTextView = view.findViewById(R.id.text_view_empty);
         return view;
     }
@@ -96,6 +92,8 @@ public class PopularMoviesFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        recyclerView.addOnScrollListener(recyclerViewOnScrollListener);
+        swipeRefreshLayout.setOnRefreshListener(onSwipeToRefresh);
         viewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
         loadMoreItems();
         viewModel.getPageNumber().observe(this, this::setPageNumber);
@@ -111,7 +109,7 @@ public class PopularMoviesFragment extends Fragment {
         }
     }
 
-    private void showError(Boolean isError) {
+    void showError(Boolean isError) {
         if (!isAdded()) {
             return;
         }
@@ -120,7 +118,7 @@ public class PopularMoviesFragment extends Fragment {
             emptyTextView.setVisibility(View.GONE);
         } else {
             String errorMsg = getString(R.string.msg_item_loading_error);
-            if (true) {
+            if (movieListAdapter != null && movieListAdapter.getItemCount() != 0) {
                 emptyTextView.setVisibility(View.GONE);
                 Snackbar snackbar = Snackbar.make(getView(), errorMsg, Snackbar.LENGTH_SHORT);
                 snackbar.show();
@@ -160,7 +158,7 @@ public class PopularMoviesFragment extends Fragment {
         this.page = page;
     }
 
-    private void showData(List<Movie> movies) {
+    void showData(List<Movie> movies) {
         if (!isAdded()) {
             return;
         }

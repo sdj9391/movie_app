@@ -1,7 +1,5 @@
 package com.example.movieapp.views.adapters;
 
-import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +54,6 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Context context = holder.itemView.getContext();
         Movie movie = movieList.get(position);
         String url = Constants.IMAGE_BASE_URL + Constants.IMAGE_SIZE + movie.getPosterPath();
         Picasso.get()
@@ -67,7 +64,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         Calendar calendar = AppUtils.getDate(movie.getReleaseDate());
         holder.dateTextView.setText(String.valueOf(calendar.get(Calendar.YEAR)));
         holder.ratingTextView.setText(String.valueOf(movie.getVoteAverage()));
-
+        holder.itemView.setTag(movie);
+        holder.itemView.setOnClickListener(onItemClickListener);
     }
 
     @Override
