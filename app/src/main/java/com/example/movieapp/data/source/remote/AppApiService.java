@@ -1,10 +1,9 @@
 package com.example.movieapp.data.source.remote;
 
 import com.example.movieapp.data.models.Movie;
-import com.example.movieapp.data.models.Review;
-import com.example.movieapp.data.models.Video;
-
-import java.util.List;
+import com.example.movieapp.data.models.PagedMovies;
+import com.example.movieapp.data.models.PagedReview;
+import com.example.movieapp.data.models.PagedVideo;
 
 import io.reactivex.Single;
 import retrofit2.http.Body;
@@ -14,26 +13,29 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface AppApiService {
-    @POST("/movie/{movie_id}/rating")
+
+    String API_VERSION = "/3";
+
+    @POST(API_VERSION + "/movie/{movie_id}/rating")
     Single<Void> rateMovie(@Path("movieId") Long movieId,
                            @Body Object object,
                            @Query("api_key") String apiKey);
 
-    @GET("/movie/{sortBy}")
-    Single<List<Movie>> getMovies(@Path("sortBy") String sortBy,
+    @GET(API_VERSION + "/movie/{sortBy}")
+    Single<PagedMovies> getMovies(@Path("sortBy") String sortBy,
                                   @Query("api_key") String apiKey,
                                   @Query("page") int page);
 
-    @GET("/movie/{movieId}")
+    @GET(API_VERSION + "/movie/{movieId}")
     Single<Movie> getMoviesDetails(@Path("movieId") Long movieId,
                                    @Query("api_key") String apiKey);
 
-    @GET("/movie/{movieId}/videos")
-    Single<List<Video>> getMoviesVideos(@Path("movieId") Long movieId,
-                                        @Query("api_key") String apiKey);
+    @GET(API_VERSION + "/movie/{movieId}/videos")
+    Single<PagedVideo> getMoviesVideos(@Path("movieId") Long movieId,
+                                       @Query("api_key") String apiKey);
 
-    @GET("/movie/{movieId}/reviews")
-    Single<List<Review>> getMoviesReviews(@Path("movieId") Long movieId,
-                                          @Query("api_key") String apiKey,
-                                          @Query("page") int page);
+    @GET(API_VERSION + "/movie/{movieId}/reviews")
+    Single<PagedReview> getMoviesReviews(@Path("movieId") Long movieId,
+                                         @Query("api_key") String apiKey,
+                                         @Query("page") int page);
 }

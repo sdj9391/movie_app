@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class PagedReview extends Paged {
-    @SerializedName("result")
+    @SerializedName("results")
     private List<Review> reviewList;
 
     public List<Review> getReviewList() {

@@ -1,5 +1,6 @@
 package com.example.movieapp.data.source.local;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -15,7 +16,7 @@ import java.util.List;
 public interface MovieDao {
 
     @Query("SELECT * FROM favoriteMovies")
-    MutableLiveData<List<Movie>> getAllFavoriteMovies();
+    LiveData<List<Movie>> getAllFavoriteMovies();
 
     @Query("SELECT * FROM favoriteMovies WHERE id = :movieId")
     Movie getFavoriteMovie(Long movieId);

@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Movie App</string>
+    <string name="label_popular">Popular</string>
+    <string name="label_top_rated">Top Rated</string>
+    <string name="label_favourite">Favourite</string>
+
+    <string-array name="cases_tabs">
+        <item>@string/label_popular</item>
+        <item>@string/label_top_rated</item>
+        <item>@string/label_favourite</item>
+    </string-array>
 </resources>

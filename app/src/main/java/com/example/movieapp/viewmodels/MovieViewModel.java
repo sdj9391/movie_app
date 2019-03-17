@@ -10,6 +10,7 @@ import com.example.movieapp.data.models.Movie;
 import com.example.movieapp.data.models.Review;
 import com.example.movieapp.data.models.Video;
 import com.example.movieapp.data.source.MoviesRepository;
+import com.example.movieapp.utils.Constants;
 
 import java.util.List;
 
@@ -19,6 +20,10 @@ public class MovieViewModel extends AndroidViewModel {
     public MovieViewModel(@NonNull Application application) {
         super(application);
         repository = new MoviesRepository(application);
+    }
+
+    public MutableLiveData<List<Movie>> getMovies() {
+        return repository.getMovies(Constants.SORT_NOW_PLAYING, 1);
     }
 
     public MutableLiveData<List<Movie>> getMovies(String sortBy, int page) {
@@ -56,6 +61,6 @@ public class MovieViewModel extends AndroidViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
-        repository.cleareApiTasks();
+        repository.clearApiTasks();
     }
 }

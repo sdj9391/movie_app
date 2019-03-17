@@ -3,6 +3,7 @@ package com.example.movieapp.data.source;
 import android.app.Application;
 import android.os.AsyncTask;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.movieapp.data.models.Movie;
@@ -10,7 +11,6 @@ import com.example.movieapp.data.models.Review;
 import com.example.movieapp.data.models.Video;
 import com.example.movieapp.data.source.local.MovieDao;
 import com.example.movieapp.data.source.local.MoviesDatabase;
-import com.example.movieapp.utils.Constants;
 
 import java.util.List;
 
@@ -24,15 +24,16 @@ public class MoviesRepository {
         moviesRemoteRepository = new MoviesRemoteRepository();
     }
 
-    public void cleareApiTasks() {
+    public void clearApiTasks() {
         moviesRemoteRepository.clearApiTasks();
     }
 
     public MutableLiveData<List<Movie>> getMovies(String sortBy, int page) {
-        if (sortBy.equalsIgnoreCase(Constants.SORT_FAVOURITE)) {
-            return movieDao.getAllFavoriteMovies();
-        }
         return moviesRemoteRepository.getMovies(sortBy, page);
+    }
+
+    public LiveData<List<Movie>> getFavoriteMovies() {
+        return movieDao.getAllFavoriteMovies();
     }
 
     public MutableLiveData<Boolean> getMoviesError() {

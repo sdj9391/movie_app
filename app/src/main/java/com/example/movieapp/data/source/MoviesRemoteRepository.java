@@ -1,12 +1,18 @@
 package com.example.movieapp.data.source;
 
+import android.util.Log;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.movieapp.data.models.Movie;
+import com.example.movieapp.data.models.PagedMovies;
+import com.example.movieapp.data.models.PagedReview;
+import com.example.movieapp.data.models.PagedVideo;
 import com.example.movieapp.data.models.Review;
 import com.example.movieapp.data.models.Video;
 import com.example.movieapp.data.source.remote.AppApiInstance;
 import com.example.movieapp.utils.Constants;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +25,12 @@ import io.reactivex.schedulers.Schedulers;
 
 class MoviesRemoteRepository {
 
+    private static final String TAG = "MoviesRemoteRepository";
     private CompositeDisposable disposable;
+
+    MoviesRemoteRepository() {
+        disposable = new CompositeDisposable();
+    }
 
     private final MutableLiveData<List<Movie>> moviesData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> moviesLoadError = new MutableLiveData<>();
@@ -74,11 +85,12 @@ class MoviesRemoteRepository {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<List<Movie>>() {
+                .subscribeWith(new DisposableSingleObserver<PagedMovies>() {
                     @Override
-                    public void onSuccess(List<Movie> movies) {
+                    public void onSuccess(PagedMovies pagedMovies) {
                         loading.setValue(false);
-                        moviesData.setValue(movies);
+                        Log.v(TAG, new Gson().toJson(pagedMovies));
+                        moviesData.setValue(pagedMovies.getMovieList());
                         moviesLoadError.setValue(false);
                     }
 
@@ -117,11 +129,11 @@ class MoviesRemoteRepository {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<List<Video>>() {
+                .subscribeWith(new DisposableSingleObserver<PagedVideo>() {
                     @Override
-                    public void onSuccess(List<Video> videos) {
+                    public void onSuccess(PagedVideo pagedVideo) {
                         loading.setValue(false);
-                        moviesVideos.setValue(videos);
+                        moviesVideos.setValue(pagedVideo.getVideoList());
                         moviesVideosError.setValue(false);
                     }
 
@@ -139,11 +151,11 @@ class MoviesRemoteRepository {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableSingleObserver<List<Review>>() {
+                .subscribeWith(new DisposableSingleObserver<PagedReview>() {
                     @Override
-                    public void onSuccess(List<Review> movies) {
+                    public void onSuccess(PagedReview pagedReview) {
                         loading.setValue(false);
-                        moviesReviews.setValue(movies);
+                        moviesReviews.setValue(pagedReview.getReviewList());
                         moviesReviewsError.setValue(false);
                     }
 
