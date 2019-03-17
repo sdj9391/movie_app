@@ -1,6 +1,8 @@
 package com.example.movieapp.views.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import com.example.movieapp.R;
 import com.example.movieapp.data.models.Movie;
 import com.example.movieapp.utils.Constants;
 import com.example.movieapp.viewmodels.MovieViewModel;
+import com.example.movieapp.views.activities.MovieDetailsActivity;
 import com.example.movieapp.views.adapters.MovieListAdapter;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -67,6 +70,15 @@ public class PopularMoviesFragment extends Fragment {
     private View.OnClickListener onItemClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            Object object = view.getTag();
+            if (object instanceof Movie) {
+                Movie movie = (Movie) object;
+                Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
+                intent.putExtra(MovieDetailsActivity.EXTRA_MOVIE_ID, movie.getId());
+                startActivity(intent);
+            } else {
+                Log.e("Error", "Wrong Instance found");
+            }
 
         }
     };
