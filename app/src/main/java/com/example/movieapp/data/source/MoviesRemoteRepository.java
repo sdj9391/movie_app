@@ -1,7 +1,5 @@
 package com.example.movieapp.data.source;
 
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.movieapp.data.models.Movie;
@@ -12,8 +10,8 @@ import com.example.movieapp.data.models.Review;
 import com.example.movieapp.data.models.Video;
 import com.example.movieapp.data.source.remote.AppApiInstance;
 import com.example.movieapp.utils.Constants;
-import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +34,8 @@ class MoviesRemoteRepository {
     private final MutableLiveData<Boolean> moviesLoadError = new MutableLiveData<>();
     private final MutableLiveData<Boolean> loading = new MutableLiveData<>();
     private final MutableLiveData<Boolean> rateMovieSuccess = new MutableLiveData<>();
+    private final MutableLiveData<Integer> pageNumber = new MutableLiveData<>();
+    private final MutableLiveData<Integer> totalPages = new MutableLiveData<>();
 
     private final MutableLiveData<List<Video>> moviesVideos = new MutableLiveData<>();
     private final MutableLiveData<Boolean> moviesVideosError = new MutableLiveData<>();
@@ -54,6 +54,14 @@ class MoviesRemoteRepository {
 
     MutableLiveData<Boolean> getLoading() {
         return loading;
+    }
+
+    MutableLiveData<Integer> getPage() {
+        return pageNumber;
+    }
+
+    MutableLiveData<Integer> getTotalPage() {
+        return totalPages;
     }
 
     MutableLiveData<Boolean> rateMovie(Long movieId, Float rating) {
@@ -81,7 +89,7 @@ class MoviesRemoteRepository {
 
     private void getMoviesCall(String sortBy, int page) {
         loading.setValue(true);
-        disposable.add(AppApiInstance.getApi().getMovies(sortBy, Constants.MOVIE_API_KEY, page)
+        disposable.add(AppApiInstance.getApi().getMovies(sortBy, Constants.MOVIE_API_KEY, page + 1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -89,8 +97,17 @@ class MoviesRemoteRepository {
                     @Override
                     public void onSuccess(PagedMovies pagedMovies) {
                         loading.setValue(false);
-                        Log.v(TAG, new Gson().toJson(pagedMovies));
-                        moviesData.setValue(pagedMovies.getMovieList());
+                        int pageNum = pagedMovies.getPage();
+                        List<Movie> currentMovieList = moviesData.getValue();
+                        List<Movie> newMovieList = pagedMovies.getMovieList();
+
+                        if (currentMovieList == null || pageNum == 1) {
+                            currentMovieList = new ArrayList<>();
+                        }
+                        currentMovieList.addAll(newMovieList);
+                        moviesData.setValue(currentMovieList);
+                        pageNumber.setValue(pagedMovies.getPage());
+                        totalPages.setValue(pagedMovies.getTotalPages());
                         moviesLoadError.setValue(false);
                     }
 
@@ -134,6 +151,8 @@ class MoviesRemoteRepository {
                     public void onSuccess(PagedVideo pagedVideo) {
                         loading.setValue(false);
                         moviesVideos.setValue(pagedVideo.getVideoList());
+                        pageNumber.setValue(pagedVideo.getPage());
+                        totalPages.setValue(pagedVideo.getTotalPages());
                         moviesVideosError.setValue(false);
                     }
 
@@ -156,6 +175,8 @@ class MoviesRemoteRepository {
                     public void onSuccess(PagedReview pagedReview) {
                         loading.setValue(false);
                         moviesReviews.setValue(pagedReview.getReviewList());
+                        pageNumber.setValue(pagedReview.getPage());
+                        totalPages.setValue(pagedReview.getTotalPages());
                         moviesReviewsError.setValue(false);
                     }
 

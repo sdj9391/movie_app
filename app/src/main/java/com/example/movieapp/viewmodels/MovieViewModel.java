@@ -4,13 +4,13 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.movieapp.data.models.Movie;
 import com.example.movieapp.data.models.Review;
 import com.example.movieapp.data.models.Video;
 import com.example.movieapp.data.source.MoviesRepository;
-import com.example.movieapp.utils.Constants;
 
 import java.util.List;
 
@@ -22,12 +22,12 @@ public class MovieViewModel extends AndroidViewModel {
         repository = new MoviesRepository(application);
     }
 
-    public MutableLiveData<List<Movie>> getMovies() {
-        return repository.getMovies(Constants.SORT_NOW_PLAYING, 1);
-    }
-
     public MutableLiveData<List<Movie>> getMovies(String sortBy, int page) {
         return repository.getMovies(sortBy, page);
+    }
+
+    public LiveData<List<Movie>> getFavoriteMovies() {
+        return repository.getFavoriteMovies();
     }
 
     public MutableLiveData<Boolean> getMoviesError() {
@@ -52,6 +52,14 @@ public class MovieViewModel extends AndroidViewModel {
 
     public MutableLiveData<Boolean> getLoading() {
         return repository.getLoading();
+    }
+
+    public MutableLiveData<Integer> getPageNumber() {
+        return repository.getPageNumber();
+    }
+
+    public MutableLiveData<Integer> getTotalPages() {
+        return repository.getTotalPages();
     }
 
     public MutableLiveData<Boolean> rateMovies(Long MovieId, Float rating) {

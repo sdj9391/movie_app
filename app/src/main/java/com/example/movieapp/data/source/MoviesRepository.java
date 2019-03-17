@@ -60,6 +60,14 @@ public class MoviesRepository {
         return moviesRemoteRepository.getLoading();
     }
 
+    public MutableLiveData<Integer> getPageNumber() {
+        return moviesRemoteRepository.getPage();
+    }
+
+    public MutableLiveData<Integer> getTotalPages() {
+        return moviesRemoteRepository.getTotalPage();
+    }
+
     public MutableLiveData<Boolean> rateMovies(Long MovieId, Float rating) {
         return moviesRemoteRepository.rateMovie(MovieId, rating);
     }

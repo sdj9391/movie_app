@@ -3,6 +3,7 @@
     <string name="label_popular">Popular</string>
     <string name="label_top_rated">Top Rated</string>
     <string name="label_favourite">Favourite</string>
+    <string name="msg_item_loading_error">Item loading error</string>
 
     <string-array name="cases_tabs">
         <item>@string/label_popular</item>
