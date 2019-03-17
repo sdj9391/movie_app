@@ -7,6 +7,7 @@
     <string name="label_reviews">Reviews</string>
     <string name="text_rating">%.1f / 10</string>
     <string name="text_date">%1$d / %2$d / %3$d</string>
+    <string name="title_author">Author: %1$s</string>
 
     <string-array name="cases_tabs">
         <item>@string/label_popular</item>

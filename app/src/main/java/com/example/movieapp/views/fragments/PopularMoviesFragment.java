@@ -67,18 +67,15 @@ public class PopularMoviesFragment extends Fragment {
         loadMoreItems();
     };
 
-    private View.OnClickListener onItemClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Object object = view.getTag();
-            if (object instanceof Movie) {
-                Movie movie = (Movie) object;
-                Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
-                intent.putExtra(MovieDetailsActivity.EXTRA_MOVIE, movie);
-                startActivity(intent);
-            } else {
-                Log.e("Error", "Wrong Instance found");
-            }
+    private View.OnClickListener onItemClickListener = view -> {
+        Object object = view.getTag();
+        if (object instanceof Movie) {
+            Movie movie = (Movie) object;
+            Intent intent = new Intent(getActivity(), MovieDetailsActivity.class);
+            intent.putExtra(MovieDetailsActivity.EXTRA_MOVIE, movie);
+            startActivity(intent);
+        } else {
+            Log.e("Error", "Wrong Instance found");
         }
     };
 

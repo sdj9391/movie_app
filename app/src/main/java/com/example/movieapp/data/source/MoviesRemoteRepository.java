@@ -166,7 +166,7 @@ class MoviesRemoteRepository {
 
     private void getMoviesReviewsCall(Long movieId, int page) {
         loading.setValue(true);
-        disposable.add(AppApiInstance.getApi().getMoviesReviews(movieId, Constants.MOVIE_API_KEY, page)
+        disposable.add(AppApiInstance.getApi().getMoviesReviews(movieId, Constants.MOVIE_API_KEY, page + 1)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -174,7 +174,15 @@ class MoviesRemoteRepository {
                     @Override
                     public void onSuccess(PagedReview pagedReview) {
                         loading.setValue(false);
-                        moviesReviews.setValue(pagedReview.getReviewList());
+                        int pageNum = pagedReview.getPage();
+                        List<Review> currentReviewList = moviesReviews.getValue();
+                        List<Review> newReviewList = pagedReview.getReviewList();
+
+                        if (currentReviewList == null || pageNum == 1) {
+                            currentReviewList = new ArrayList<>();
+                        }
+                        currentReviewList.addAll(newReviewList);
+                        moviesReviews.setValue(currentReviewList);
                         pageNumber.setValue(pagedReview.getPage());
                         totalPages.setValue(pagedReview.getTotalPages());
                         moviesReviewsError.setValue(false);
