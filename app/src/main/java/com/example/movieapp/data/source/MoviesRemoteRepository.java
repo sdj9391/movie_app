@@ -108,7 +108,11 @@ class MoviesRemoteRepository {
                         moviesData.setValue(currentMovieList);
                         pageNumber.setValue(pagedMovies.getPage());
                         totalPages.setValue(pagedMovies.getTotalPages());
-                        moviesLoadError.setValue(false);
+                        if (currentMovieList.size() == 0) {
+                            moviesLoadError.setValue(true);
+                        } else {
+                            moviesLoadError.setValue(false);
+                        }
                     }
 
                     @Override
@@ -185,7 +189,11 @@ class MoviesRemoteRepository {
                         moviesReviews.setValue(currentReviewList);
                         pageNumber.setValue(pagedReview.getPage());
                         totalPages.setValue(pagedReview.getTotalPages());
-                        moviesReviewsError.setValue(false);
+                        if (currentReviewList.size() == 0) {
+                            moviesReviewsError.setValue(true);
+                        } else {
+                            moviesReviewsError.setValue(false);
+                        }
                     }
 
                     @Override

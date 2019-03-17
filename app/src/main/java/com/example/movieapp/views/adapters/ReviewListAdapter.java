@@ -1,7 +1,6 @@
 package com.example.movieapp.views.adapters;
 
 import android.content.Context;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +58,6 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
             authorTextView = itemView.findViewById(R.id.text_view_author);
             reviewTextView = itemView.findViewById(R.id.text_view_review);
             urlTextView = itemView.findViewById(R.id.text_view_url);
-            urlTextView.setMovementMethod(LinkMovementMethod.getInstance());
         }
     }
 }

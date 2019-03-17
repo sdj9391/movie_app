@@ -138,6 +138,11 @@ public class MovieReviewActivity extends AppCompatActivity {
     }
 
     void showData(List<Review> reviewList) {
+        if (reviewList == null || reviewList.size() == 0) {
+            showError(true);
+            return;
+        }
+
         if (reviewListAdapter == null) {
             reviewListAdapter = new ReviewListAdapter(reviewList);
             recyclerView.setAdapter(reviewListAdapter);

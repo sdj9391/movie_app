@@ -171,6 +171,11 @@ public class PopularMoviesFragment extends Fragment {
             return;
         }
 
+        if (movies == null || movies.size() == 0) {
+            showError(true);
+            return;
+        }
+
         if (movieListAdapter == null) {
             movieListAdapter = new MovieListAdapter(movies);
             movieListAdapter.setOnItemClickListener(onItemClickListener);
